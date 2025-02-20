@@ -1,0 +1,47 @@
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from .models import Personaje
+from .serializers import PersonajeSerializer
+
+class PersonajeViewSet(viewsets.ModelViewSet):
+    queryset = Personaje.objects.all()
+    serializer_class = PersonajeSerializer
+
+   def list(self, request, *args, **kwargs):
+        personajes = self.get_queryset()
+        serializer = self.get_serializer(personajes, many=True)
+        return Response({
+            "mensaje": "Lista de personajes obtenida con éxito",
+            "cantidad": personajes.count(),
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
+
+    def retrieve(self, request, *args, **kwargs):
+        personaje = self.get_object()
+        serializer = self.get_serializer(personaje)
+        return Response({
+            "mensaje": "Detalles del personaje obtenidos correctamente",
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
+
+
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"mensaje": "Personaje creado exitosamente", "data": serializer.data}, status=status.HTTP_201_CREATED)
+        return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, *args, **kwargs):
+        personaje = self.get_object()
+        serializer = self.get_serializer(personaje, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"mensaje": "Personaje actualizado con éxito", "data": serializer.data}, status=status.HTTP_200_OK)
+        return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        personaje = self.get_object()
+        personaje.delete()
+        return Response({"mensaje": "Personaje eliminado correctamente"}, status=status.HTTP_204_NO_CONTENT)
