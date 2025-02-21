@@ -5,11 +5,11 @@ from .views import HistoriaViewSet, TiempoMapasViewSet, MapasViewSet, EmpresasVi
 
 
 router = DefaultRouter()
-router.register(r'historias', HistoriaViewSet)
-router.register(r'tiempos-mapas', TiempoMapasViewSet)
-router.register(r'mapas', MapasViewSet)
+router.register(r'historia', HistoriaViewSet)
+router.register(r'tiempos-mapa', TiempoMapasViewSet)
+router.register(r'mapa', MapasViewSet)
 router.register(r'empresas', EmpresasViewSet)
-router.register(r'ciberataques', CiberataqueViewSet)
+router.register(r'ciberataque', CiberataqueViewSet)
 router.register(r'puntos-defensa', PuntosDefensaViewSet)
 router.register(r'empresas-puntos-defensa', EmpresasPuntoDefensaViewSet)
 
